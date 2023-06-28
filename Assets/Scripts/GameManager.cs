@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     public int score { get; private set; }
     public int lives { get; private set; }
     public int ghostMultiplier { get; private set; } = 1; // If a ghost is eaten, how much more is the next ghost worth
-    public int winScore { get; private set; } = 10000; // Score added when the game is won
+    public int winScore = 10000; // Score added when the game is won
+    public int loseScore = -10000; // Score added when pacman dies, NOTE it is added so it must be negative
 
     public int start_lives = 1; // default number of lives
 
@@ -62,6 +63,9 @@ public class GameManager : MonoBehaviour
         }
 
         this.pacman.gameObject.SetActive(false);
+
+        // tank the score
+        SetScore(this.score + this.loseScore);
 
         // new game TODO Above code is not needed in the case of ML
         NewGame();
