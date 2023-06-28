@@ -8,7 +8,10 @@ public class GhostHome : GhostBehavior
 
     private void OnDisable()
     {
-        StartCoroutine(ExitTransition());
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(ExitTransition());
+        }
     }
 
     private void OnEnable()
@@ -40,6 +43,7 @@ public class GhostHome : GhostBehavior
         }
 
         elapsed = 0.0f;
+        position = this.transform.position;
 
         // from inside pos to outside pos
         while (elapsed < duration)
