@@ -19,6 +19,16 @@ public class GhostHome : GhostBehavior
         StopAllCoroutines();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Reverse direction everytime the ghost hits a wall to create the
+        // effect of the ghost bouncing around the home
+        if (enabled && collision.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
+        {
+            ghost.movement.SetDirection(-ghost.movement.direction);
+        }
+    }
+
     private IEnumerator ExitTransition()
     {
         this.ghost.movement.SetDirection(Vector2.up, true);
