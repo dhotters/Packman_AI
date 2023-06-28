@@ -91,4 +91,36 @@ public class GhostFrightened : GhostBehavior
             }
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // movement
+
+        Node node = other.GetComponent<Node>();
+
+        if (node != null && enabled)
+        {
+            Vector2 direction = Vector2.zero;
+            float maxDistance = float.MinValue;
+
+            // we move into the direction that maximizes the distance between ghost and pacman
+            foreach (Vector2 availableDirection in node.availableDirections)
+            {
+                // new pos if we would move in current availabledirection
+                Vector3 newPosition = transform.position + new Vector3(availableDirection.x, availableDirection.y);
+
+                // compute distance
+                float distance = (ghost.target.position - newPosition).sqrMagnitude; // sqrMagnitude because its faster which is important for ML
+
+                // find direction which maximizes distance
+                if (distance > maxDistance)
+                {
+                    direction = availableDirection;
+                    maxDistance = distance;
+                }
+            }
+
+            this.ghost.movement.SetDirection(direction);
+        }
+    }
 }
