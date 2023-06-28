@@ -11,22 +11,20 @@ public class GhostChase : GhostBehavior
     private void OnTriggerEnter2D(Collider2D other)
     {
         Node node = other.GetComponent<Node>();
-        Debug.Log(true);
 
-        if (node != null && this.enabled && !this.ghost.frightened.enabled)
+        if (node != null && enabled && !ghost.frightened.enabled)
         {
             Vector2 direction = Vector2.zero;
             float minDistance = float.MaxValue;
-            Debug.Log(false);
-            // we move into the direction that minimizes the distance between ghost and pacman
 
+            // we move into the direction that minimizes the distance between ghost and pacman
             foreach (Vector2 availableDirection in node.availableDirections)
             {
                 // new pos if we would move in current availabledirection
-                Vector3 newPosition = this.transform.position + new Vector3(availableDirection.x, availableDirection.y, 0.0f);
+                Vector3 newPosition = transform.position + new Vector3(availableDirection.x, availableDirection.y);
 
                 // compute distance
-                float distance = (this.ghost.target.position - newPosition).sqrMagnitude; // sqrMagnitude because its faster which is important for ML
+                float distance = (ghost.target.position - newPosition).sqrMagnitude; // sqrMagnitude because its faster which is important for ML
 
                 // find direction which minizes distance
                 if (distance < minDistance)
