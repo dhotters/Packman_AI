@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7540194916150439959, guid: 6007cca64f08a014780600a5e048fc75, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7540194916150439959, guid: 6007cca64f08a014780600a5e048fc75, type: 3}
       propertyPath: m_LocalPosition.x
@@ -80,8 +80,23 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8514193854599688648, guid: 6007cca64f08a014780600a5e048fc75, type: 3}
+      propertyPath: initialBehavior
+      value: 
+      objectReference: {fileID: 96464057323438909}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6007cca64f08a014780600a5e048fc75, type: 3}
+--- !u!114 &96464057323438909 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8324796523455118377, guid: 6007cca64f08a014780600a5e048fc75, type: 3}
+  m_PrefabInstance: {fileID: 8273442198673538836}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c68dd7bf44dac5d4dba8b50e69e6970e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

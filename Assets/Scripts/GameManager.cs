@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(this.score.ToString());
+        //Debug.Log(this.score.ToString());
     }
 
     private void NewGame()
@@ -49,11 +49,11 @@ public class GameManager : MonoBehaviour
         // enable all ghost
         for (int i = 0; i < this.ghosts.Length; i++)
         {
-            this.ghosts[i].gameObject.SetActive(true);
+            this.ghosts[i].ResetState();
         }
 
         // enable pacman
-        this.pacman.gameObject.SetActive(true);
+        this.pacman.ResetState();
     }
 
     private void GameOver()
