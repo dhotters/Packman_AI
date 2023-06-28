@@ -14,20 +14,17 @@ public class GameManager : MonoBehaviour
     public int ghostMultiplier { get; private set; } = 1; // If a ghost is eaten, how much more is the next ghost worth
     public int winScore { get; private set; } = 10000; // Score added when the game is won
 
+    public int start_lives = 1; // default number of lives
+
     private void Start()
     {
         NewGame();
     }
 
-    private void Update()
-    {
-        //Debug.Log(this.score.ToString());
-    }
-
     private void NewGame()
     {
         SetScore(0);
-        SetLives(1); // I only use a single life as its about the AI not the OG game, however could add multiple lives later
+        SetLives(this.start_lives);
         NewRound();
     }
 
