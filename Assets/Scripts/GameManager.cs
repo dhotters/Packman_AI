@@ -123,7 +123,14 @@ public class GameManager : MonoBehaviour
 
     public void PowerPelletEaten(PowerPellet pellet)
     {
-        // TODO change ghost state
+       // change all ghosts states to frightened
+       for (int i = 0; i < this.ghosts.Length; i++)
+        {
+            this.ghosts[i].frightened.Enable(pellet.duration);
+        }
+
+
+
         PelletEaten(pellet);
 
         // If a power pellet is eaten whilst still within the duration, we want to reset the time so we cancel invoke first

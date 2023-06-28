@@ -18,7 +18,7 @@ public abstract class GhostBehavior : MonoBehaviour
         Enable(this.duration);
     }
 
-    public void Enable(float duration)
+    public virtual void Enable(float duration)
     {
         this.enabled = true;
 
@@ -27,7 +27,7 @@ public abstract class GhostBehavior : MonoBehaviour
         Invoke(nameof(Disable), duration);
     }
 
-    public void Disable()
+    public virtual void Disable()
     {
         enabled = false;
         CancelInvoke();
