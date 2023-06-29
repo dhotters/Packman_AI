@@ -11,6 +11,7 @@ public class Ghost : MonoBehaviour
     public GhostBehavior initialBehavior; // Not all ghost start with the same behavior, this is the initial
 
     public Transform target; // the target of what we are chasing, will be pacman
+    public Transform scatterTarget;
     public int points = 200; // How many points are added when a ghost is eaten
 
     public Type ghostType = new Type();

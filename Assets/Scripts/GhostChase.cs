@@ -29,7 +29,7 @@ public class GhostChase : GhostBehavior
                 PinkyChase(other);
                 break;
             case Ghost.Type.Clyde:
-                BlinkyChase(other); // TODO, for now use blinky chase
+                ClydeChase(other);
                 break;
 
         }
@@ -153,11 +153,53 @@ public class GhostChase : GhostBehavior
 
     private void ClydeChase(Collider2D other)
     {
-            ///
-            /// Clyde chases pacman by doing the same as blinky, however clyde tries to head to his
-            /// scatter corner (lower left) when he is within 8-dot radius of pacman
-            ///
+        ///
+        /// Clyde chases pacman by doing the same as blinky, however clyde tries to head to his
+        /// scatter corner (lower left) when he is within 8-dot radius of pacman
+        ///
 
-            // TODO
+        // TODO
+        // Get the node
+        Node node = other.GetComponent<Node>();
+
+        if (node != null && enabled && !ghost.frightened.enabled)
+        {
+            Vector2 direction = Vector2.zero;
+            float minDistance = float.MaxValue;
+
+            // we move into the direction that minimizes the distance between ghost and pacman
+            foreach (Vector2 availableDirection in node.availableDirections)
+            {
+                // new pos if we would move in current availabledirection
+                Vector3 newPosition = transform.position + new Vector3(availableDirection.x, availableDirection.y);
+
+                // get distance from pacman
+                float distance_pacman = (ghost.target.position - ghost.transform.position).sqrMagnitude;
+
+                // if not within 8 tiles, do normal blinky
+                // NOTE 64 because sqrMagnitude
+                Vector3 tgt;
+                if (distance_pacman >= 64)
+                {
+                    tgt = ghost.target.position;
+                } else
+                {
+                    // if within 8 tiles, go to scatter target
+                    tgt = ghost.scatterTarget.position;
+                }
+
+                // compute distance
+                float distance = (tgt - newPosition).sqrMagnitude; // sqrMagnitude because its faster which is important for ML
+
+                // find direction which minizes distance
+                if (distance < minDistance)
+                {
+                    direction = availableDirection;
+                    minDistance = distance;
+                }
+            }
+
+            this.ghost.movement.SetDirection(direction);
         }
+    }
 }
