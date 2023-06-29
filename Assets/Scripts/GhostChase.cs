@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class GhostChase : GhostBehavior
 {
+
+    public Transform transformBlinky;
+
     private void OnDisable()
     {
         // after stopping chase, enter scatter mode
@@ -26,7 +29,7 @@ public class GhostChase : GhostBehavior
                 PinkyChase(other);
                 break;
             case Ghost.Type.Clyde:
-                ClydeChase(other);
+                BlinkyChase(other); // TODO, for now use blinky chase
                 break;
 
         }
@@ -34,6 +37,10 @@ public class GhostChase : GhostBehavior
 
     private void BlinkyChase(Collider2D other)
     {
+        ///
+        /// Blinky chases pacman by simply targeting him and taking the shortest path
+        ///
+
         // Get the node
         Node node = other.GetComponent<Node>();
 
@@ -65,18 +72,11 @@ public class GhostChase : GhostBehavior
 
     private void InkyChase(Collider2D other)
     {
-        // Get the node
-        Node node = other.GetComponent<Node>();
+        ///
+        /// Inky's target is relative to both blinky and pacman
+        /// The distance blinky is from pinky's target is doubled to get inky's target
+        ///
 
-        if (node != null && enabled && !ghost.frightened.enabled)
-        {
-            // TODO
-
-        }
-    }
-
-    private void PinkyChase(Collider2D other)
-    {
         // Get the node
         Node node = other.GetComponent<Node>();
 
@@ -91,8 +91,49 @@ public class GhostChase : GhostBehavior
                 // new pos if we would move in current availabledirection
                 Vector3 newPosition = transform.position + new Vector3(availableDirection.x, availableDirection.y);
 
-                // For pinky the target is 2 pellets infront of pacman
+                // For pinky the target is 4 pellets infront of pacman
                 Vector3 pelletDir = ghost.target.GetComponent<Movement>().direction * 2.0f;
+                Vector3 target1 = ghost.target.position + pelletDir; // target 2 pellets infron of pacman
+
+                Vector3 targetPos = (target1 - transformBlinky.position) * 2; // Vector from blinky to the target, size doubled
+
+                // compute distance
+                float distance = (targetPos - newPosition).sqrMagnitude; // sqrMagnitude because its faster which is important for ML
+
+                // find direction which minizes distance
+                if (distance < minDistance)
+                {
+                    direction = availableDirection;
+                    minDistance = distance;
+                }
+            }
+
+            this.ghost.movement.SetDirection(direction);
+        }
+    }
+
+    private void PinkyChase(Collider2D other)
+    {
+        ///
+        /// Pinky chases after packman by targeting 4 pellets infront of pacman
+        ///
+
+        // Get the node
+        Node node = other.GetComponent<Node>();
+
+        if (node != null && enabled && !ghost.frightened.enabled)
+        {
+            Vector2 direction = Vector2.zero;
+            float minDistance = float.MaxValue;
+
+            // we move into the direction that minimizes the distance between ghost and pacman
+            foreach (Vector2 availableDirection in node.availableDirections)
+            {
+                // new pos if we would move in current availabledirection
+                Vector3 newPosition = transform.position + new Vector3(availableDirection.x, availableDirection.y);
+
+                // For pinky the target is 4 pellets infront of pacman
+                Vector3 pelletDir = ghost.target.GetComponent<Movement>().direction * 4.0f;
                 Vector3 targetPos = ghost.target.position + pelletDir;
 
                 // compute distance
@@ -112,6 +153,11 @@ public class GhostChase : GhostBehavior
 
     private void ClydeChase(Collider2D other)
     {
+            ///
+            /// Clyde chases pacman by doing the same as blinky, however clyde tries to head to his
+            /// scatter corner (lower left) when he is within 8-dot radius of pacman
+            ///
 
-    }
+            // TODO
+        }
 }
