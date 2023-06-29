@@ -13,6 +13,16 @@ public class Ghost : MonoBehaviour
     public Transform target; // the target of what we are chasing, will be pacman
     public int points = 200; // How many points are added when a ghost is eaten
 
+    public Type ghostType = new Type();
+
+    public enum Type
+    {
+        Blinky,
+        Inky,
+        Pinky,
+        Clyde
+    }
+
     private void Awake()
     {
         this.movement = GetComponent<Movement>();
