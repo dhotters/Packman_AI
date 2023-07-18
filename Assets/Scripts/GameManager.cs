@@ -3,6 +3,7 @@
 ///
 
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class GameManager : MonoBehaviour
     public int loseScore = -10000; // Score added when pacman dies, NOTE it is added so it must be negative
 
     public int start_lives = 1; // default number of lives
+
+    public TextMeshProUGUI text_score;
+    public TextMeshProUGUI text_lives;
+    public TextMeshProUGUI text_iterations;
+
 
     private void Start()
     {
@@ -74,11 +80,13 @@ public class GameManager : MonoBehaviour
     private void SetScore(int score)
     {
         this.score = score;
+        text_score.text = "Score: " + this.score;
     }
 
     private void SetLives(int lives)
     {
         this.lives = lives;
+        text_lives.text = "Lives: " + this.lives;
     }
 
     public void GhostEaten(Ghost ghost)
