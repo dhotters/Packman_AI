@@ -60,7 +60,7 @@ public class PacmanAgent : Agent
         if (moveDir == 0)
         {
             new_dir = current_dir;
-            this.movement.SetDirection(new_dir);
+            //this.movement.SetDirection(new_dir);
         }
         else if (moveDir == 1)
         {
@@ -80,6 +80,40 @@ public class PacmanAgent : Agent
 
         // Rotate pacman
         float angle = Mathf.Atan2(this.movement.direction.y, this.movement.direction.x);
-        this.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.forward);
+        this.pacman.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.forward);
+    }
+
+    // User takes over control
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        // get the discrete actions to modify them
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+
+        /// <summary>
+        /// We define the following actions:
+        /// 0 - No change, keep moving in the current direction
+        /// 1 - Go backward ie reverse
+        /// 2 - Turn left
+        /// 3 - Turn right
+        /// </summary>
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            discreteActions[0] = 0;
+        }
+        else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            discreteActions[0] = 1;
+        }
+        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            discreteActions[0] = 2;
+        }
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            discreteActions[0] = 3;
+        }
+
+        Debug.Log(discreteActions[0]);
     }
 }
