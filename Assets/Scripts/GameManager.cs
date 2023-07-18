@@ -10,11 +10,16 @@ public class GameManager : MonoBehaviour
     public Ghost[] ghosts;
     public Pacman pacman;
     public Transform pellets;
+    public PacmanAgent agent;
+
     public int score { get; private set; }
     public int lives { get; private set; }
     public int ghostMultiplier { get; private set; } = 1; // If a ghost is eaten, how much more is the next ghost worth
     public int winScore = 10000; // Score added when the game is won
     public int loseScore = -10000; // Score added when pacman dies, NOTE it is added so it must be negative
+    public float maxResetTime = 30f; // max time in seconds if no pellets are eaten after which the game is reset
+
+    private float timeSinceLastPelletEaten = 0f; // time since the last pellet was eaten
 
     public int start_lives = 1; // default number of lives
     public bool enableGhost = true; // start with ghosts or not, for testing/training purposes
@@ -29,8 +34,22 @@ public class GameManager : MonoBehaviour
         NewGame();
     }
 
+    private void Update()
+    {
+        // increment the time since the last pellet was eaten
+        this.timeSinceLastPelletEaten += Time.deltaTime;
+
+        // check threshold exceeded or not
+        if (timeSinceLastPelletEaten >= maxResetTime)
+        {
+            this.PacmanEaten(); // call pacman eaten, this will reset the game also
+        }
+    }
+
     private void NewGame()
     {
+        this.agent.EndEpisode(); // End the agent episode
+
         SetScore(0);
         SetLives(this.start_lives);
         NewRound();
@@ -60,6 +79,9 @@ public class GameManager : MonoBehaviour
 
         // enable pacman
         this.pacman.ResetState();
+
+        // Reset timer
+        timeSinceLastPelletEaten = 0f;
     }
 
     private void GameOver()
@@ -83,6 +105,8 @@ public class GameManager : MonoBehaviour
     {
         this.score = score;
         text_score.text = "Score: " + this.score;
+
+        this.agent.SetReward(this.score); // Reward or penalize the agent
     }
 
     private void SetLives(int lives)
@@ -114,6 +138,10 @@ public class GameManager : MonoBehaviour
 
     public void PelletEaten(Pellet pellet)
     {
+        // Reset timer 
+        timeSinceLastPelletEaten = 0f;
+
+
         // disable pellet so you can't eat it again and its not visible
         pellet.gameObject.SetActive(false);
 

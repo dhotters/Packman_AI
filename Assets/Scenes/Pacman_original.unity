@@ -1304,6 +1304,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 676175537}
+  - component: {fileID: 676175539}
+  - component: {fileID: 676175538}
+  - component: {fileID: 676175540}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -1326,6 +1329,70 @@ Transform:
   m_Father: {fileID: 1696487833}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &676175538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676175536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb26f51a44e941c499ff5bdd32d7e61d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 10000
+  ghosts: []
+  pacman: {fileID: 1793857910}
+  pellets: {fileID: 872336626}
+  movement: {fileID: 0}
+--- !u!114 &676175539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676175536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 490
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 04000000
+    VectorActionSize: 04000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: PacmanAI
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
+--- !u!114 &676175540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676175536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 0
 --- !u!1 &733548057
 GameObject:
   m_ObjectHideFlags: 0
@@ -11233,6 +11300,10 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 676175538}
+    - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
       propertyPath: pacman
       value: 
       objectReference: {fileID: 1793857910}
@@ -11255,6 +11326,10 @@ PrefabInstance:
     - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
       propertyPath: start_lives
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
+      propertyPath: maxResetTime
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
       propertyPath: text_iterations
