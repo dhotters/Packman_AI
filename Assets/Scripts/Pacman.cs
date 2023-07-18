@@ -12,20 +12,39 @@ public class Pacman : MonoBehaviour
 
     private void Update()
     {
+
+        // get current direction
+        Vector2 current_dir = this.movement.direction;
+
+        // set new direction, defaulted to the current dir
+        Vector2 new_dir;
+
         // Movement using arrow keys or WASD
+        // This movement is RELATIVE ie pressing left rotates character to its left
+        // Note set new dir inside the if statement such that the queue works properly
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            this.movement.SetDirection(Vector2.up);
+            //this.movement.SetDirection(Vector2.up);
+            new_dir = current_dir;
+            this.movement.SetDirection(new_dir);
+
         } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            this.movement.SetDirection(Vector2.down);
+            //this.movement.SetDirection(Vector2.down);
+            new_dir = -current_dir;
+            this.movement.SetDirection(new_dir);
         }
         else if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            this.movement.SetDirection(Vector2.left);
-        } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            //this.movement.SetDirection(Vector2.left);
+            new_dir = new Vector2(-current_dir.y, current_dir.x);
+            this.movement.SetDirection(new_dir);
+        } 
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
-            this.movement.SetDirection(Vector2.right);
+            //this.movement.SetDirection(Vector2.right);
+            new_dir = new Vector2(current_dir.y, -current_dir.x);
+            this.movement.SetDirection(new_dir);
         }
 
         // Rotate pacman
