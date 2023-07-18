@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public float maxResetTime = 30f; // max time in seconds if no pellets are eaten after which the game is reset
 
     private float timeSinceLastPelletEaten = 0f; // time since the last pellet was eaten
+    private int iteration = 0;
+    private int wins = 0;
 
     public int start_lives = 1; // default number of lives
     public bool enableGhost = true; // start with ghosts or not, for testing/training purposes
@@ -27,6 +29,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI text_score;
     public TextMeshProUGUI text_lives;
     public TextMeshProUGUI text_iterations;
+    public TextMeshProUGUI text_rounds;
+    public TextMeshProUGUI text_wins;
+ 
 
 
     private void Start()
@@ -49,6 +54,11 @@ public class GameManager : MonoBehaviour
     private void NewGame()
     {
         this.agent.EndEpisode(); // End the agent episode
+        
+        iteration++;
+
+        this.text_iterations.text = "Iteration: " + iteration;
+        this.text_rounds.text = "Rounds: " + iteration;
 
         SetScore(0);
         SetLives(this.start_lives);
@@ -150,6 +160,9 @@ public class GameManager : MonoBehaviour
 
         if (!HasRemainingPellets())
         {
+            wins++;
+            text_wins.text = "Wins: " + wins;
+
             // game is finished, all pellets are eaten
             // disable pacman so you cannot be eaten
             this.pacman.gameObject.SetActive(false);
