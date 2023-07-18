@@ -113,7 +113,5 @@ public class PacmanAgent : Agent
         {
             discreteActions[0] = 3;
         }
-
-        Debug.Log(discreteActions[0]);
     }
 }
