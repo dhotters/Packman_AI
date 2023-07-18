@@ -52,6 +52,10 @@ ExportedObj/
 *.pdb.meta
 *.mdb.meta
 
+# Python virtual environment
+venv/
+.mypy_cache/
+
 # Unity3D generated file on crash reports
 sysinfo.txt
 
