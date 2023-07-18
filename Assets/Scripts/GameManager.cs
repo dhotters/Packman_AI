@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public int loseScore = -10000; // Score added when pacman dies, NOTE it is added so it must be negative
 
     public int start_lives = 1; // default number of lives
+    public bool enableGhost = true; // start with ghosts or not, for testing/training purposes
 
     public TextMeshProUGUI text_score;
     public TextMeshProUGUI text_lives;
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < this.ghosts.Length; i++)
         {
             this.ghosts[i].ResetState();
+            this.ghosts[i].gameObject.SetActive(this.enableGhost);
         }
 
         // enable pacman
@@ -126,6 +128,8 @@ public class GameManager : MonoBehaviour
 
             // Increase score
             SetScore(this.score + this.winScore);
+
+            NewGame();
         }
     }
 

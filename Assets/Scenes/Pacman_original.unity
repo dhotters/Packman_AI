@@ -11249,6 +11249,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1295053841}
     - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
+      propertyPath: enableGhost
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
       propertyPath: start_lives
       value: 1
       objectReference: {fileID: 0}

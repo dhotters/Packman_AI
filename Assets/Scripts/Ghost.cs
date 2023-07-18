@@ -40,7 +40,6 @@ public class Ghost : MonoBehaviour
 
     public void ResetState()
     {
-        this.gameObject.SetActive(true);
         this.movement.ResetState();
 
         // initial state of all ghosts, always start with scatter

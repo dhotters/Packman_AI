@@ -61,7 +61,6 @@ public class Movement : MonoBehaviour
         {
             // Queue up the movement
             this.nextDirection = direction;
-            Debug.Log(direction);
         }
     }
 
