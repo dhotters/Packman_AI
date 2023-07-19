@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using TMPro;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,18 +13,18 @@ public class GameManager : MonoBehaviour
     public Transform pellets;
     public PacmanAgent agent;
 
-    public int score { get; private set; }
+    public float score { get; private set; }
     public int lives { get; private set; }
     public int ghostMultiplier { get; private set; } = 1; // If a ghost is eaten, how much more is the next ghost worth
 
-    public int winScore = 100; // Score added when the game is won
-    public int loseScore = -100; // Score added when pacman dies, NOTE it is added so it must be negative
-    public int pelletScore = 1;
+    public float winScore = 2f; // Score added when the game is won
+    public float loseScore = -2f; // Score added when pacman dies, NOTE it is added so it must be negative
+    public float pelletScore = 0.005f;
 
     public float maxResetTime = 30f; // max time in seconds if no pellets are eaten after which the game is reset
 
     private float timeSinceLastPelletEaten = 0f; // time since the last pellet was eaten
-    private int iteration = 0;
+    private int current_iteration = 0;
     private int wins = 0;
 
     public int start_lives = 1; // default number of lives
@@ -58,10 +59,10 @@ public class GameManager : MonoBehaviour
     {
         this.agent.EndEpisode(); // End the agent episode
         
-        iteration++;
+        current_iteration++;
 
-        this.text_iterations.text = "Iteration: " + iteration;
-        this.text_rounds.text = "Rounds: " + iteration;
+        this.text_iterations.text = "Iteration: " + agent.CompletedEpisodes;
+        this.text_rounds.text = "Rounds: " + current_iteration;
 
         SetScore(0);
         SetLives(this.start_lives);
@@ -109,17 +110,18 @@ public class GameManager : MonoBehaviour
 
         // tank the score
         SetScore(this.score + this.loseScore);
+        agent.AddReward(this.loseScore);
 
         // new game TODO Above code is not needed in the case of ML
         NewGame();
     }
 
-    private void SetScore(int score)
+    private void SetScore(float score)
     {
         this.score = score;
-        text_score.text = "Score: " + this.score;
+        text_score.text = "Score: " + Math.Round(this.score, 2);
 
-        this.agent.SetReward(this.score); // Reward or penalize the agent
+        //this.agent.SetReward(this.score); // Reward or penalize the agent
     }
 
     private void SetLives(int lives)
@@ -131,6 +133,7 @@ public class GameManager : MonoBehaviour
     public void GhostEaten(Ghost ghost)
     {
         SetScore(this.score + ghost.points * this.ghostMultiplier);
+        this.agent.AddReward(ghost.points * this.ghostMultiplier);
         this.ghostMultiplier++;
     }
 
@@ -160,6 +163,7 @@ public class GameManager : MonoBehaviour
 
         // increase score
         SetScore(this.score + this.pelletScore);
+        agent.AddReward(this.pelletScore);
 
         if (!HasRemainingPellets())
         {
@@ -172,6 +176,7 @@ public class GameManager : MonoBehaviour
 
             // Increase score
             SetScore(this.score + this.winScore);
+            agent.AddReward(this.winScore);
 
             NewGame();
         }
