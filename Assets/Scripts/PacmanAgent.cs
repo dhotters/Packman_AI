@@ -15,7 +15,7 @@ public class PacmanAgent : Agent
     public Ghost[] ghosts;
     public Pacman pacman;
     public Transform pellets;
-    public Movement movement;
+    private Movement movement;
 
     public void Start()
     {

@@ -12,7 +12,7 @@ public class Ghost : MonoBehaviour
 
     public Transform target; // the target of what we are chasing, will be pacman
     public Transform scatterTarget;
-    public int points = 200; // How many points are added when a ghost is eaten
+    public int points = 0; // How many points are added when a ghost is eaten
 
     public Type ghostType = new Type();
 

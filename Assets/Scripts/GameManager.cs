@@ -15,8 +15,11 @@ public class GameManager : MonoBehaviour
     public int score { get; private set; }
     public int lives { get; private set; }
     public int ghostMultiplier { get; private set; } = 1; // If a ghost is eaten, how much more is the next ghost worth
-    public int winScore = 10000; // Score added when the game is won
-    public int loseScore = -10000; // Score added when pacman dies, NOTE it is added so it must be negative
+
+    public int winScore = 100; // Score added when the game is won
+    public int loseScore = -100; // Score added when pacman dies, NOTE it is added so it must be negative
+    public int pelletScore = 1;
+
     public float maxResetTime = 30f; // max time in seconds if no pellets are eaten after which the game is reset
 
     private float timeSinceLastPelletEaten = 0f; // time since the last pellet was eaten
@@ -156,7 +159,7 @@ public class GameManager : MonoBehaviour
         pellet.gameObject.SetActive(false);
 
         // increase score
-        SetScore(this.score + pellet.points);
+        SetScore(this.score + this.pelletScore);
 
         if (!HasRemainingPellets())
         {

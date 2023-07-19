@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2999140387085516573
 MonoBehaviour:
@@ -51,4 +51,14 @@ MonoBehaviour:
   - {fileID: 0}
   pacman: {fileID: 0}
   pellets: {fileID: 0}
+  agent: {fileID: 0}
+  winScore: 10000
+  loseScore: -10000
+  maxResetTime: 45
   start_lives: 1
+  enableGhost: 0
+  text_score: {fileID: 0}
+  text_lives: {fileID: 0}
+  text_iterations: {fileID: 0}
+  text_rounds: {fileID: 0}
+  text_wins: {fileID: 0}
