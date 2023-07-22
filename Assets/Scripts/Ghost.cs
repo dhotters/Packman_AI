@@ -14,6 +14,8 @@ public class Ghost : MonoBehaviour
     public Transform scatterTarget;
     public int points = 0; // How many points are added when a ghost is eaten
 
+    public bool enable = true;
+
     public Type ghostType = new Type();
 
     public enum Type
@@ -36,6 +38,27 @@ public class Ghost : MonoBehaviour
     private void Start()
     {
         ResetState();
+    }
+
+    private void OnDrawGizmos()
+    {
+        switch (ghostType)
+        {
+            case Ghost.Type.Blinky:
+                Gizmos.color = Color.red;
+                break;
+            case Ghost.Type.Inky:
+                Gizmos.color = Color.cyan;
+                break;
+            case Ghost.Type.Pinky:
+                Gizmos.color = new Color(255, 192, 203);
+                break;
+            case Ghost.Type.Clyde:
+                Gizmos.color = new Color(255, 165, 0);
+                break;
+        }
+        
+        Gizmos.DrawSphere(target.position, 0.5f);
     }
 
     public void ResetState()

@@ -7518,7 +7518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 10
+  DecisionPeriod: 8
   TakeActionsBetweenDecisions: 0
 --- !u!1 &6360848397013442288
 GameObject:
@@ -11116,11 +11116,11 @@ PrefabInstance:
       objectReference: {fileID: 192695833113430116}
     - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
       propertyPath: winScore
-      value: 1000
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
       propertyPath: loseScore
-      value: -1000
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 2999140387085516573, guid: 15b5e2e6c93a6734e8e8110fae792a38, type: 3}
       propertyPath: text_wins
