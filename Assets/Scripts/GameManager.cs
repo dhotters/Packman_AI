@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        // set pellet score such that 1 score means the board is cleared
+        pelletScore = 1f / (float)pellets.childCount;
+
         lastPos = pacman.transform.position;
         NewGame();
     }
@@ -108,47 +112,47 @@ public class GameManager : MonoBehaviour
             pellet.gameObject.SetActive(true);
         }
 
-        // Create a list of random numbers
-        List<int> randomList = new List<int>();
-        for (int i = 0; i < 244-numPellets; i++)
-        {
+        //// Create a list of random numbers
+        //List<int> randomList = new List<int>();
+        //for (int i = 0; i < 244-numPellets; i++)
+        //{
 
-            // get a random number
-            int num = UnityEngine.Random.Range(0, 244);
+        //    // get a random number
+        //    int num = UnityEngine.Random.Range(0, 244);
 
-            while (randomList.Contains(num))
-            {
-                // if the list contains the number, generate another number untill it doesnt
-                num = UnityEngine.Random.Range(0, 244);
-            }
+        //    while (randomList.Contains(num))
+        //    {
+        //        // if the list contains the number, generate another number untill it doesnt
+        //        num = UnityEngine.Random.Range(0, 244);
+        //    }
 
-            // add the number to the list
-            randomList.Add(num);
-        }
+        //    // add the number to the list
+        //    randomList.Add(num);
+        //}
         
-        // Enable the correct pellets and make sure they are in the correct layer
-        for (int i = 0; i < 244; i++)
-        {
-            Transform p = this.pellets.GetChild(i); // current pellet
+        //// Enable the correct pellets and make sure they are in the correct layer
+        //for (int i = 0; i < 244; i++)
+        //{
+        //    Transform p = this.pellets.GetChild(i); // current pellet
 
-            // check if this index is in the list of random numbers
-            if (randomList.Contains(i))
-            {
-                // disable the pellet
-                p.gameObject.SetActive(false);
+        //    // check if this index is in the list of random numbers
+        //    if (randomList.Contains(i))
+        //    {
+        //        // disable the pellet
+        //        p.gameObject.SetActive(false);
 
-                // move to other pellet layer
-                p.gameObject.layer = LayerMask.NameToLayer("UnusedPellet");
-            } else
-            {
-                // if the current pellet should be enabled
-                // enable the pellet
-                p.gameObject.SetActive(true);
+        //        // move to other pellet layer
+        //        p.gameObject.layer = LayerMask.NameToLayer("UnusedPellet");
+        //    } else
+        //    {
+        //        // if the current pellet should be enabled
+        //        // enable the pellet
+        //        p.gameObject.SetActive(true);
 
-                // add to correct layer
-                p.gameObject.layer = LayerMask.NameToLayer("Pellet");
-            }
-        }
+        //        // add to correct layer
+        //        p.gameObject.layer = LayerMask.NameToLayer("Pellet");
+        //    }
+        //}
 
         ResetState();
     }
@@ -250,6 +254,8 @@ public class GameManager : MonoBehaviour
         {
             wins++;
             text_wins.text = "Wins: " + wins;
+
+            Debug.Log("Won on iteration: " + current_iteration);
 
             // game is finished, all pellets are eaten
             // disable pacman so you cannot be eaten

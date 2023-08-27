@@ -296,7 +296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1892219837404555737, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: ghosts.Array.size
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1892219837404555737, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: ghosts.Array.data[0]
@@ -316,11 +316,11 @@ PrefabInstance:
       objectReference: {fileID: 833116455}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: winScore
-      value: 1000
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: loseScore
-      value: -1000
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: numPellets
@@ -328,7 +328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: stuckScore
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: enableGhost
@@ -336,7 +336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: pelletScore
-      value: 10
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: start_lives
@@ -344,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: maxResetTime
-      value: 30
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: maxStuckTime
@@ -352,7 +352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: loseLiveScore
-      value: -10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1985218019347626459, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: randomizePellets
@@ -439,8 +439,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6968925029982873751, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968925029982873751, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
+      propertyPath: m_InferenceDevice
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968925029982873751, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 24
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8787505818432627645, guid: b419a565a8ad83c4aa718a8ef33230e1, type: 3}
       propertyPath: m_Name

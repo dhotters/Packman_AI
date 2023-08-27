@@ -20,63 +20,69 @@ public class PacmanAgent : Agent
 
     public bool relativeMovement = true; // use relative movement or absolute?
 
+
+    // params for normalization
+    private float minX = float.MaxValue;
+    private float minY = float.MaxValue;
+
+    private float maxX = float.MinValue;
+    private float maxY = float.MinValue;
+
     public void Start()
     {
         this.movement = this.pacman.movement;
+
+
+        // Get min x, y and max x, y values to normalize the position vectors of the agent
+        foreach (Transform p in pellets)
+        {
+            if (p.position.x < minX)
+            {
+                minX = p.position.x;
+            }
+
+            if (p.position.y < minY)
+            {
+                minY = p.position.y;
+            }
+
+            if (p.position.x > maxX)
+            {
+                maxX = p.position.x;
+            }
+
+            if (p.position.y > maxY)
+            {
+                maxY = p.position.y;
+            }
+        }
     }
 
     // Collect the observations (how the agent interacts with environment)
+    // Normalize the inputs
     public override void CollectObservations(VectorSensor sensor)
     {
-        // Add pacman position, cast to vector2
-        sensor.AddObservation((Vector2)this.pacman.transform.position);
+        // Add pacman position, cast to vector2, normalized
+        sensor.AddObservation(NormalizeVec2((Vector2)this.pacman.transform.position));
 
-        // Add ghost positions 
+        // Add ghost positions and direction
         foreach (Ghost ghost in ghosts)
         {
             if (ghost.gameObject.activeSelf)
             {
-                sensor.AddObservation((Vector2)ghost.transform.position);
+                sensor.AddObservation(NormalizeVec2((Vector2)ghost.transform.position));
+                sensor.AddObservation(ghost.movement.direction);
+                //sensor.AddObservation(Vector2.zero);
+                //sensor.AddObservation(Vector2.zero);
             } else
             {
                 sensor.AddObservation(Vector2.zero);
-            }
-        }
-
-        // Add pellets positions, cast to vector2
-        //foreach (Transform pellet in this.pellets)
-        //{
-        //    // check if the pellet is active
-        //    if (pellet.gameObject.activeSelf && pellet.gameObject.layer == LayerMask.NameToLayer("Pellet"))
-        //    {
-        //        // if the pellet is active and in the pellet layer, then add it to the observation
-        //        sensor.AddObservation((Vector2)pellet.position);
-        //    }
-        //    else if (!pellet.gameObject.activeSelf && pellet.gameObject.layer == LayerMask.NameToLayer("Pellet"))
-        //    {
-        //        // if the pellet is not active but is inside the pellet layer then add zero vector
-        //        sensor.AddObservation(Vector2.zero);
-        //    }
-
-
-        //    // if its not in the pellet layer, ignore
-        //}
-
-        // Add power pellet locations
-        foreach (Transform pellet in this.pellets)
-        {
-            if (pellet.gameObject.GetComponent<PowerPellet>() != null && pellet.gameObject.activeSelf)
-            {
-                sensor.AddObservation((Vector2)pellet.position);
-            }
-            else if (pellet.gameObject.GetComponent<PowerPellet>() != null && !pellet.gameObject.activeSelf)
-            {
                 sensor.AddObservation(Vector2.zero);
             }
         }
 
-            // also add raycast hit information
-            Vector2[] directions;
+        // also add raycast hit information
+        Vector2[] directions;
         if (relativeMovement) 
         {
             // if moving relative input observations relatively aswell ie forward backward left and right to packman
@@ -93,19 +99,68 @@ public class PacmanAgent : Agent
         {
             directions = new Vector2[] { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
         }
-       
+
+        //IList<float> occupiedDirections = new List<float> { 0.0f, 0.0f, 0.0f, 0.0f };
+
         for (int i = 0; i < 4; i++)
         {
             bool occupied = movement.Occupied(directions[i]);
-
             sensor.AddObservation(occupied);
+            //occupiedDirections[i] = occupied ? 0.0f : 1.0f;
         }
 
-        // amount of pacdots left
-        sensor.AddObservation(manager.remainingPacdots);
+        //sensor.AddObservation(occupiedDirections);
+
+        // amount of pacdots left, normalized
+        sensor.AddObservation(manager.remainingPacdots/manager.pellets.childCount);
 
         // distance to closest pellet
-        sensor.AddObservation(closestPelletDistance());
+        //sensor.AddObservation(closestPelletDistance());
+
+        // closest pellet coordinates
+        sensor.AddObservation(closestPellet());
+
+        // closest power pellet coordinates
+        sensor.AddObservation(closestPowerPellet());
+
+        // distance to closest ghost
+        //sensor.AddObservation(closestGhostDistance());
+        //sensor.AddObservation(100);
+
+        // Add pellets positions, cast to vector2
+        //foreach (Transform pellet in this.pellets)
+        //{
+        //    if (pellet.gameObject.GetComponent<PowerPellet>() == null)
+        //    {
+        //        // check if the pellet is active
+        //        if (pellet.gameObject.activeSelf && pellet.gameObject.layer == LayerMask.NameToLayer("Pellet"))
+        //        {
+        //            // if the pellet is active and in the pellet layer, then add it to the observation
+        //            sensor.AddObservation(NormalizeVec2((Vector2)pellet.position));
+        //        }
+        //        else if (!pellet.gameObject.activeSelf && pellet.gameObject.layer == LayerMask.NameToLayer("Pellet"))
+        //        {
+        //            // if the pellet is not active but is inside the pellet layer then add zero vector
+        //            sensor.AddObservation(Vector2.zero);
+        //        }
+        //        // if its not in the pellet layer, ignore
+        //    }
+        //    // if its a power pellet ignore
+        //}
+
+        // Add power pellet locations
+
+        //foreach (Transform pellet in this.pellets)
+        //{
+        //    if (pellet.gameObject.GetComponent<PowerPellet>() != null && pellet.gameObject.activeSelf)
+        //    {
+        //        sensor.AddObservation(NormalizeVec2((Vector2)pellet.position));
+        //    }
+        //    else if (pellet.gameObject.GetComponent<PowerPellet>() != null && !pellet.gameObject.activeSelf)
+        //    {
+        //        sensor.AddObservation(Vector2.zero);
+        //    }
+        //}
     }
 
     // When an action is received (decision from agent or heuristic)
@@ -212,7 +267,7 @@ public class PacmanAgent : Agent
         }
     }
 
-    private float closestPelletDistance()
+    private float closestPelletDistance(bool normalize = true)
     {
         float minDist = float.MaxValue;
         foreach (Transform pellet in this.pellets)
@@ -226,6 +281,80 @@ public class PacmanAgent : Agent
                 }
             }
         }
+
+        // NOTE This normalization assumes a map that is rectangular
+        if (normalize)
+        {
+            float dx2 = Mathf.Pow(maxX - minX, 2);
+            float dy2 = Mathf.Pow(maxY - minY, 2);
+            float maxDiagonalDist = Mathf.Sqrt(dx2 + dy2);
+
+            minDist = minDist / maxDiagonalDist;
+        }
+
         return minDist;
+    }
+
+    private Vector2 closestPellet(bool normalize = true)
+    {
+        Vector2 closest = Vector2.zero;
+        float minDist = float.MaxValue;
+        foreach (Transform pellet in this.pellets)
+        {
+            if (pellet.gameObject.activeSelf)
+            {
+                float dist = Vector2.Distance((Vector2)pacman.transform.position, (Vector2)pellet.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    closest = (Vector2)pellet.position;
+                }
+            }
+        }
+        return NormalizeVec2(closest);
+    }
+
+    private Vector2 closestPowerPellet(bool normalize = true)
+    {
+        Vector2 closest = Vector2.zero;
+        float minDist = float.MaxValue;
+        foreach (Transform pellet in this.pellets)
+        {
+            if (pellet.gameObject.activeSelf && pellet.gameObject.GetComponent<PowerPellet>() != null)
+            {
+                float dist = Vector2.Distance((Vector2)pacman.transform.position, (Vector2)pellet.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    closest = (Vector2)pellet.position;
+                }
+            }
+        }
+        return NormalizeVec2(closest);
+    }
+
+    private float closestGhostDistance()
+    {
+        float minDist = 1000;
+        foreach (Ghost ghost in ghosts)
+        {
+            if (ghost.gameObject.activeSelf)
+            {
+                float dist = Vector2.Distance((Vector2)pacman.transform.position, (Vector2)ghost.transform.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                }
+            }
+        }
+        return minDist;
+    }
+
+    private Vector2 NormalizeVec2(Vector2 vector)
+    {
+        float normX = (vector.x - minX) / (maxX - minX);
+        float normY = (vector.y - minY) / (maxY - minY);
+
+        return new Vector2(normX, normY);
     }
 }
